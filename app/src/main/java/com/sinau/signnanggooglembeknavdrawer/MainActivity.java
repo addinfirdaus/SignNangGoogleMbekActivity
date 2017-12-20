@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,13 +27,14 @@ import com.google.android.gms.common.api.ResultCallback;
 import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
     private int RC_SIGN_IN = 0;
     private GoogleApiClient mGoogleApiClient;
-    private SignInButton signInButton;
-    private Button signOutButton;
-    private ImageView imgProfilePic;
     SignInButton sign_in_button;
     private String personName;
+    private Uri personPhoto;
+    private String personGivenName;
+    private String personEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +117,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 //            Toast.makeText(this, ""+acct.getDisplayName(), Toast.LENGTH_SHORT).show();
             //Similarly you can get the email and photourl using acct.getEmail() and  acct.getPhotoUrl()
             personName = acct.getDisplayName();
-                String personGivenName = acct.getGivenName();
+            personGivenName = acct.getGivenName();
                 String personFamilyName = acct.getFamilyName();
-                String personEmail = acct.getEmail();
+            personEmail = acct.getEmail();
                 String personId = acct.getId();
-                Uri personPhoto = acct.getPhotoUrl();
+            personPhoto = acct.getPhotoUrl();
 
 //            if(acct.getPhotoUrl() != null)
 //                new LoadProfileImage(imgProfilePic).execute(acct.getPhotoUrl().toString());
@@ -133,11 +135,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         private void updateUI(boolean signedIn) {
             if (signedIn) {
                 Intent i = new Intent(this,SuksesLogin.class);
-                i.putExtra("nama",personName);
+                i.putExtra("nama",personGivenName);
+                i.putExtra("email",personEmail);
+                i.putExtra("imageUri", personPhoto.toString());
                 startActivity(i);
                 finish();
             } else {
                 Toast.makeText(this, "NO", Toast.LENGTH_SHORT).show();
             }
         }
+
+//    boolean doubleBackToExitPressedOnce = false;
+//    @Override
+//    public void onBackPressed() {
+//        if (doubleBackToExitPressedOnce) {
+//            finish();
+//            super.onBackPressed();
+//            return;
+//        }
+//
+//        this.doubleBackToExitPressedOnce = true;
+//        Toast.makeText(this, "Tekan sekali lagi untuk keluar", Toast.LENGTH_SHORT).show();
+//
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                doubleBackToExitPressedOnce = false;
+//            }
+//        }, 2000);
+//    }
 }

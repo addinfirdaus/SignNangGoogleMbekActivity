@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SuksesLogin"></activity>
+        <activity android:name=".SuksesLogin"
+            android:theme="@style/NoToolbar"></activity>
     </application>
 
 </manifest>
